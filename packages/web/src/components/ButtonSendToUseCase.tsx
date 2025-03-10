@@ -106,6 +106,15 @@ const ButtonSendToUseCase: React.FC<Props> = (props) => {
                   setShowModal(false);
                 }}
               />
+              <UseCaseItem
+                path="/rag-knowledge-base"
+                queryKey="sentence"
+                text={props.text}
+                title="RAGチャット"
+                onClose={() => {
+                  setShowModal(false);
+                }}
+              />
             </ul>
           </ModalDialog>
         </div>
