@@ -355,77 +355,77 @@ export class RagKnowledgeBaseStack extends Stack {
       },
     });
 
-    new bedrock.CfnDataSource(this, 'DataSource', {
-      dataSourceConfiguration: {
-        s3Configuration: {
-          bucketArn: `arn:aws:s3:::${dataSourceBucket.bucketName}`,
-          inclusionPrefixes: ['docs/'],
-        },
-        type: 'S3',
-      },
-      vectorIngestionConfiguration: {
-        ...(ragKnowledgeBaseAdvancedParsing
-          ? {
-              // Advanced Parsing を有効化する場合のみ、parsingConfiguration を構成する
-              parsingConfiguration: {
-                parsingStrategy: 'BEDROCK_FOUNDATION_MODEL',
-                bedrockFoundationModelConfiguration: {
-                  modelArn: `arn:aws:bedrock:${this.region}::foundation-model/${ragKnowledgeBaseAdvancedParsingModelId}`,
-                  parsingPrompt: {
-                    parsingPromptText: PARSING_PROMPT,
-                  },
-                },
-              },
-            }
-          : {}),
-        // チャンク戦略を変更したい場合は、以下のコメントアウトを外して、各種パラメータを調整することで、環境に合わせた環境構築が可能です。
-        // 以下の 4 種類のチャンク戦略が選択可能です。
-        // - デフォルト (何も指定しない)
-        // - セマンティックチャンク
-        // - 階層チャンク
-        // - 標準チャンク
-        // 詳細は以下の Document を参照ください。
-        // https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking-parsing.html
-        // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_bedrock.CfnDataSource.ChunkingConfigurationProperty.html
-        //
-        // セマンティックチャンク
-        // chunkingConfiguration: {
-        //   chunkingStrategy: 'SEMANTIC',
-        //   semanticChunkingConfiguration: {
-        //     maxTokens: 300,
-        //     bufferSize: 0,
-        //     breakpointPercentileThreshold: 95,
-        //   },
-        // },
-        //
-        // 階層チャンク
-        // chunkingConfiguration: {
-        //   chunkingStrategy: 'HIERARCHICAL',
-        //   hierarchicalChunkingConfiguration: {
-        //     levelConfigurations: [
-        //       {
-        //         maxTokens: 1500, // 親チャンクの Max Token サイズ
-        //       },
-        //       {
-        //         maxTokens: 300, // 子チャンクの Max Token サイズ
-        //       },
-        //     ],
-        //     overlapTokens: 60,
-        //   },
-        // },
-        //
-        // 標準チャンク
-        // chunkingConfiguration: {
-        //   chunkingStrategy: 'FIXED_SIZE',
-        //   fixedSizeChunkingConfiguration: {
-        //     maxTokens: 300,
-        //     overlapPercentage: 10,
-        //   },
-        // },
-      },
-      knowledgeBaseId: knowledgeBase.ref,
-      name: 's3-data-source',
-    });
+    // new bedrock.CfnDataSource(this, 'DataSource', {
+    //   dataSourceConfiguration: {
+    //     s3Configuration: {
+    //       bucketArn: `arn:aws:s3:::${dataSourceBucket.bucketName}`,
+    //       inclusionPrefixes: ['docs/'],
+    //     },
+    //     type: 'S3',
+    //   },
+    //   vectorIngestionConfiguration: {
+    //     ...(ragKnowledgeBaseAdvancedParsing
+    //       ? {
+    //           // Advanced Parsing を有効化する場合のみ、parsingConfiguration を構成する
+    //           parsingConfiguration: {
+    //             parsingStrategy: 'BEDROCK_FOUNDATION_MODEL',
+    //             bedrockFoundationModelConfiguration: {
+    //               modelArn: `arn:aws:bedrock:${this.region}::foundation-model/${ragKnowledgeBaseAdvancedParsingModelId}`,
+    //               parsingPrompt: {
+    //                 parsingPromptText: PARSING_PROMPT,
+    //               },
+    //             },
+    //           },
+    //         }
+    //       : {}),
+    //     // チャンク戦略を変更したい場合は、以下のコメントアウトを外して、各種パラメータを調整することで、環境に合わせた環境構築が可能です。
+    //     // 以下の 4 種類のチャンク戦略が選択可能です。
+    //     // - デフォルト (何も指定しない)
+    //     // - セマンティックチャンク
+    //     // - 階層チャンク
+    //     // - 標準チャンク
+    //     // 詳細は以下の Document を参照ください。
+    //     // https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking-parsing.html
+    //     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_bedrock.CfnDataSource.ChunkingConfigurationProperty.html
+    //     //
+    //     // セマンティックチャンク
+    //     // chunkingConfiguration: {
+    //     //   chunkingStrategy: 'SEMANTIC',
+    //     //   semanticChunkingConfiguration: {
+    //     //     maxTokens: 300,
+    //     //     bufferSize: 0,
+    //     //     breakpointPercentileThreshold: 95,
+    //     //   },
+    //     // },
+    //     //
+    //     // 階層チャンク
+    //     // chunkingConfiguration: {
+    //     //   chunkingStrategy: 'HIERARCHICAL',
+    //     //   hierarchicalChunkingConfiguration: {
+    //     //     levelConfigurations: [
+    //     //       {
+    //     //         maxTokens: 1500, // 親チャンクの Max Token サイズ
+    //     //       },
+    //     //       {
+    //     //         maxTokens: 300, // 子チャンクの Max Token サイズ
+    //     //       },
+    //     //     ],
+    //     //     overlapTokens: 60,
+    //     //   },
+    //     // },
+    //     //
+    //     // 標準チャンク
+    //     // chunkingConfiguration: {
+    //     //   chunkingStrategy: 'FIXED_SIZE',
+    //     //   fixedSizeChunkingConfiguration: {
+    //     //     maxTokens: 300,
+    //     //     overlapPercentage: 10,
+    //     //   },
+    //     // },
+    //   },
+    //   knowledgeBaseId: knowledgeBase.ref,
+    //   name: 's3-data-source',
+    // });
 
     knowledgeBase.addDependency(collection);
     knowledgeBase.node.addDependency(ossIndex.customResource);
